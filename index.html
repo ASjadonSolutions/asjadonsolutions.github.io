@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="AjobWorlds — global jobs by country, city, category and work type.">
+  <meta property="og:title" content="AjobWorlds — Global Jobs. Better Future.">
+  <meta property="og:description" content="Find your next job anywhere in the world.">
+  <meta name="theme-color" content="#061a35">
+  <link rel="canonical" href="">
+  <title>AjobWorlds — Global Jobs. Better Future.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="#" data-nav="home" aria-label="AjobWorlds Home">
+        <span class="brand-mark" aria-hidden="true">🌐</span>
+        <span class="brand-copy"><strong>AjobWorlds</strong><small>Global Jobs. Better Future.</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <button data-nav="home" class="nav-link active">Find Jobs</button>
+        <button data-nav="categories" class="nav-link">Categories</button>
+        <button data-nav="companies" class="nav-link">Companies</button>
+        <button data-nav="saved" class="nav-link">Saved Jobs</button>
+      </nav>
+      <div class="header-actions">
+        <button id="languageBtn" class="lang-btn" type="button">🇬🇧 EN⌄</button>
+        <button id="loginBtn" class="login-btn" type="button">Login</button>
+        <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="Open menu">☰</button>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section id="screen-home" class="screen active">
+        <section class="hero">
+          <div class="hero-globe" aria-hidden="true"><div class="globe-core">🌍</div></div>
+          <div class="hero-inner">
+            <p class="eyebrow">GLOBAL OPPORTUNITIES</p>
+            <h1>Find Your Next Job<br><span>Anywhere in the World</span></h1>
+            <p class="hero-subtitle">Search jobs by position, location, city, country and job type.</p>
+            <form id="searchForm" class="hero-search" novalidate>
+              <label class="search-field"><span>⌕</span><input id="searchInput" type="search" autocomplete="off" placeholder="Job title, skill or keyword"><b>⌄</b></label>
+              <label class="search-field location-field"><span>●</span><input id="locationInput" type="text" autocomplete="off" placeholder="Country, State or City"><b>⌄</b></label>
+              <button id="searchBtn" class="primary-btn search-btn" type="submit"><span>⌕</span> Search Jobs</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="category-strip" aria-label="Popular categories">
+          <div id="categoryRow" class="category-row"></div>
+        </section>
+
+        <section class="trust-strip">
+          <div><span>🌐</span><strong>Global Opportunities</strong><small>Jobs in 50+ countries</small></div>
+          <div><span>🛡</span><strong>Trusted Platform</strong><small>Safe & secure process</small></div>
+          <div><span>▣</span><strong>Easy Application</strong><small>Apply in minutes</small></div>
+          <div><span>♙</span><strong>Better Future</strong><small>Build your career</small></div>
+        </section>
+
+        <section class="jobs-layout">
+          <aside id="filterPanel" class="filter-panel">
+            <div class="filter-head"><h2>Filters</h2><button id="clearFiltersBtn" type="button" class="text-btn">Clear All</button></div>
+            <div class="filter-group"><label>Country<select id="filterCountry"></select></label></div>
+            <div class="filter-group"><label>State / Province<select id="filterState"></select></label></div>
+            <div class="filter-group"><label>City<select id="filterCity"></select></label></div>
+            <div class="filter-group"><label>Category<select id="filterCategory"></select></label></div>
+            <div class="filter-group salary-filter"><label>Salary Min<input id="salaryMin" type="number" min="0" placeholder="Any"></label><label>Salary Max<input id="salaryMax" type="number" min="0" placeholder="Any"></label></div>
+            <div class="filter-group"><label>Job Type<select id="filterJobType"></select></label></div>
+            <div class="filter-group"><label>Experience<select id="filterExperience"></select></label></div>
+            <div class="filter-group"><label>Education<select id="filterEducation"></select></label></div>
+            <div class="filter-group"><label>Work Mode<select id="filterWorkMode"></select></label></div>
+            <div class="chip-filter">
+              <button type="button" data-special="fresher">Fresher</button>
+              <button type="button" data-special="remote">Remote</button>
+              <button type="button" data-special="wfh">Work From Home</button>
+              <button type="button" data-special="accommodation">Accommodation</button>
+              <button type="button" data-special="food">Food Provided</button>
+              <button type="button" data-special="visa">Visa Sponsorship</button>
+              <button type="button" data-special="relocation">Relocation</button>
+            </div>
+            <button id="applyFiltersBtn" class="primary-btn full-btn" type="button">Apply Filters</button>
+          </aside>
+
+          <section class="results-panel">
+            <div class="results-head">
+              <div><h2>Jobs Found: <span id="jobCount">0</span></h2><p id="disclaimer">Job information may be subject to verification.</p></div>
+              <label class="sort-select">Sort <select id="sortSelect"><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="salaryLow">Salary Low → High</option><option value="salaryHigh">Salary High → Low</option></select></label>
+            </div>
+            <div id="loadingState" class="loading-state hidden"><span class="spinner"></span><strong id="loadingText">Searching...</strong></div>
+            <div id="jobList" class="job-list"></div>
+            <div id="pagination" class="pagination"></div>
+            <div id="noResults" class="empty-state hidden"><div>⌕</div><h2>No Jobs Found</h2><p>Try another keyword, location or filter.</p><button id="noResultsClear" class="primary-btn">Clear Filters</button></div>
+          </section>
+        </section>
+      </section>
+
+      <section id="screen-categories" class="screen">
+        <div class="screen-heading"><button class="back-btn" data-back="home">←</button><div><h1>Job Categories</h1><p>Choose a category to explore jobs</p></div></div>
+        <div id="categoryGrid" class="category-grid"></div>
+        <h2 class="section-title">Popular Job Types</h2>
+        <div id="popularTypes" class="popular-grid"></div>
+      </section>
+
+      <section id="screen-details" class="screen">
+        <div class="details-shell">
+          <button class="back-btn" data-back="home">← <span>Back to Jobs</span></button>
+          <div id="jobDetails"></div>
+        </div>
+      </section>
+
+      <section id="screen-apply" class="screen">
+        <div class="apply-shell">
+          <button class="back-btn" data-back="details">← <span>Back to Job</span></button>
+          <div class="apply-grid">
+            <aside id="applyJobSummary" class="apply-summary"></aside>
+            <form id="applicationForm" class="application-form" novalidate>
+              <div class="form-heading"><h1>Application Form</h1><p>Complete your details to record this application.</p></div>
+              <div class="form-grid">
+                <label>Full Name *<input id="appName" name="name" autocomplete="name" placeholder="Enter your full name"></label>
+                <label>Email / Gmail *<input id="appEmail" name="email" type="email" autocomplete="email" placeholder="Enter your email address"></label>
+                <label>Mobile Number *<input id="appMobile" name="mobile" inputmode="tel" autocomplete="tel" placeholder="Enter mobile number"></label>
+                <label>Education *<select id="appEducation" name="education"></select></label>
+                <label>Country *<select id="appCountry" name="country"></select></label>
+                <label>State / Province *<select id="appState" name="state"></select></label>
+                <label>City *<select id="appCity" name="city"></select></label>
+                <label>Job ID<input id="appJobId" name="jobId" readonly></label>
+                <label class="wide">Application Date<input id="appDate" readonly></label>
+                <label class="wide">Cover Letter<textarea id="appCover" name="cover" rows="4" placeholder="Write a short cover letter..."></textarea></label>
+              </div>
+              <div class="resume-box">
+                <div><strong>Resume Upload *</strong><small>PDF, DOC or DOCX (Max 5MB)</small></div>
+                <input id="resumeInput" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                <label for="resumeInput" class="upload-btn">☁ Upload Your Resume</label>
+                <div id="resumeMeta" class="resume-meta hidden"></div>
+              </div>
+              <div id="formError" class="form-error" role="alert"></div>
+              <button id="submitApplicationBtn" class="primary-btn full-btn" type="submit">➤ Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-success" class="screen">
+        <div class="success-screen">
+          <div class="success-logo">🌐 AjobWorlds</div>
+          <div class="success-check">✓</div>
+          <h1>Application Submitted</h1>
+          <p>Your application has been recorded successfully.</p>
+          <button class="primary-btn" data-nav="home">Back to Jobs</button>
+          <button id="viewApplicationsFromSuccess" class="link-btn" type="button">View My Applications</button>
+          <div class="success-illustration" aria-hidden="true">🌍</div>
+        </div>
+      </section>
+
+      <section id="screen-saved" class="screen">
+        <div class="simple-screen"><div class="screen-heading"><button class="back-btn" data-back="home">←</button><div><h1>Saved Jobs</h1><p>Your saved jobs stay here after refresh.</p></div></div><div id="savedList" class="job-list"></div><div id="savedEmpty" class="empty-state hidden"><div>♡</div><h2>No Saved Jobs</h2><p>Tap the heart on a job card to save it.</p></div></div>
+      </section>
+
+      <section id="screen-applications" class="screen">
+        <div class="simple-screen"><div class="screen-heading"><button class="back-btn" data-back="home">←</button><div><h1>My Applications</h1><p>Applications recorded on this device.</p></div></div><div id="applicationsList" class="applications-list"></div><div id="applicationsEmpty" class="empty-state hidden"><div>▣</div><h2>No Applications Yet</h2><p>Your submitted applications will appear here.</p></div></div>
+      </section>
+
+      <section id="screen-companies" class="screen">
+        <div class="simple-screen"><div class="screen-heading"><button class="back-btn" data-back="home">←</button><div><h1>Companies</h1><p>Browse companies represented in the current local dataset.</p></div></div><div id="companyList" class="company-grid"></div></div>
+      </section>
+    </main>
+
+    <aside id="mobileMenu" class="mobile-menu" aria-hidden="true">
+      <div class="menu-panel">
+        <button id="closeMenuBtn" class="menu-close" type="button">×</button>
+        <div class="menu-brand">🌐 <strong>AjobWorlds</strong></div>
+        <button data-nav="home">⌂ <span>Home</span></button>
+        <button data-nav="home">⌕ <span>Find Jobs</span></button>
+        <button data-nav="categories">▦ <span>Categories</span></button>
+        <button data-nav="companies">▥ <span>Companies</span></button>
+        <button data-nav="saved">♡ <span>Saved Jobs</span></button>
+        <button id="menuApplications">▣ <span>My Applications</span></button>
+        <div class="menu-promo"><div>🌍</div><strong>Global Opportunities<br>One Platform</strong><small>Find jobs. Build your future.</small></div>
+      </div>
+    </aside>
+
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+      <button data-nav="home" class="active">⌂<span>Home</span></button>
+      <button data-nav="saved">♡<span>Saved</span></button>
+      <button id="mobileProfileBtn">♙<span>Profile</span></button>
+    </nav>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="modalBackdrop" class="modal-backdrop hidden">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button id="modalClose" class="modal-close" type="button">×</button>
+        <h2 id="modalTitle">AjobWorlds</h2>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+  <script src="job-data.js"></script>
+  <script src="backend.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
